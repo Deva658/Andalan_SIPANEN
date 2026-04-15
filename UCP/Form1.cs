@@ -14,6 +14,8 @@ namespace UCP
 
     public partial class Form1 : Form
     {
+        private readonly SqlConnection conn;
+        private readonly string connectionString = "Data Source = DEVA\\DEPA15; Initial Catalog = DB_HasilPanen; Integrated Security=True";
         
     }
 }
