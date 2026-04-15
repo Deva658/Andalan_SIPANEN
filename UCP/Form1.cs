@@ -79,7 +79,10 @@ namespace UCP
                 reader.Close();
                 conn.Close();
             }
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }
