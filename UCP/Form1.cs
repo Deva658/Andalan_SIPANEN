@@ -100,7 +100,10 @@ namespace UCP
 
                 conn.Close();
             }
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show("Koneksi Database Gagal!\nPastikan SQL Server menyala.\n\nDetail: " + ex.Message, "Error Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
