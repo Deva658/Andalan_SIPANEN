@@ -85,5 +85,22 @@ namespace UCP
             }
         }
 
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+
+                conn.Open();
+
+                MessageBox.Show("Koneksi Database Berhasil! Aplikasi siap digunakan.", "Status Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                conn.Close();
+            }
+            
+        }
     }
 }
