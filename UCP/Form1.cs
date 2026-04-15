@@ -16,6 +16,16 @@ namespace UCP
     {
         private readonly SqlConnection conn;
         private readonly string connectionString = "Data Source = DEVA\\DEPA15; Initial Catalog = DB_HasilPanen; Integrated Security=True";
-        
+        public Form1()
+        {
+            InitializeComponent();
+            conn = new SqlConnection(connectionString);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
