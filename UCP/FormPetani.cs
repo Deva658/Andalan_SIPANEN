@@ -28,6 +28,23 @@ namespace UCP
             btnLogout.Click += btnLogout_Click;
         }
 
+        private void FormPetani_Load(object sender, EventArgs e)
+        {
+            cmbKualitas.Items.Clear();
+            cmbKualitas.Items.Add("Grade A (Sangat Bagus)");
+            cmbKualitas.Items.Add("Grade B (Bagus)");
+            cmbKualitas.Items.Add("Grade C (Standar)");
+
+            LoadDataKeComboBox("SELECT id_tanaman, nama_tanaman FROM Tanaman", cmbTanaman, "nama_tanaman", "id_tanaman");
+
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.CellClick += dataGridView1_CellClick;
+        }
+
         
     }
 }
