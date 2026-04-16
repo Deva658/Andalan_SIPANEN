@@ -72,7 +72,10 @@ namespace UCP
                 reader.Close();
                 conn.Close();
             }
-           
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal Menampilkan Data: " + ex.Message);
+            }
         }
 
         
