@@ -71,6 +71,53 @@ namespace UCP
             dtpTanggal.Value = DateTime.Now;
         }
 
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+
+                dataGridView1.Rows.Clear();
+                dataGridView1.Columns.Clear();
+                dataGridView1.Columns.Add("ID", "ID Panen");
+                dataGridView1.Columns.Add("Petani", "Nama Petani");
+                dataGridView1.Columns.Add("NoTelp", "No. Telepon");
+                dataGridView1.Columns.Add("Tanaman", "Nama Tanaman");
+                dataGridView1.Columns.Add("Tanggal", "Tanggal Panen");
+                dataGridView1.Columns.Add("Jumlah", "Jumlah Hasil");
+                dataGridView1.Columns.Add("Satuan", "Satuan");
+                dataGridView1.Columns.Add("Kualitas", "Kualitas");
+
+                string query = @"SELECT h.id_panen, p.nama_petani, p.no_telp, t.nama_tanaman, h.tanggal_panen, h.jumlah_hasil, t.satuan_hasil, h.kualitas 
+                         FROM Hasil_Panen h
+                         JOIN Petani p ON h.id_petani = p.id_petani
+                         JOIN Tanaman t ON h.id_tanaman = t.id_tanaman
+                         WHERE h.id_petani = @IDLogin";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@IDLogin", idPetaniLogin);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dataGridView1.Rows.Add(
+                        reader["id_panen"].ToString(),
+                        reader["nama_petani"].ToString(),
+                        reader["no_telp"].ToString(),
+                        reader["nama_tanaman"].ToString(),
+                        Convert.ToDateTime(reader["tanggal_panen"]).ToShortDateString(),
+                        reader["jumlah_hasil"].ToString(),
+                        reader["satuan_hasil"].ToString(),
+                        reader["kualitas"].ToString()
+                    );
+                }
+                reader.Close();
+                conn.Close();
+            }
+            catch (Exception ex) { MessageBox.Show("Gagal Menampilkan Data: " + ex.Message); }
+        }
+
         
     }
 }
