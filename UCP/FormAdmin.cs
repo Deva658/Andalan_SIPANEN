@@ -148,7 +148,10 @@ namespace UCP
                     conn.Close();
                 }
             }
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi Kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         
