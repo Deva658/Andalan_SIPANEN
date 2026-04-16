@@ -113,7 +113,10 @@ namespace UCP
                 reader.Close();
                 conn.Close();
             }
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal Mencari Data: " + ex.Message);
+            }
         }
 
         
