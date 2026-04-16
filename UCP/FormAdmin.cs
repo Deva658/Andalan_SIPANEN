@@ -119,6 +119,38 @@ namespace UCP
             }
         }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.Index == -1)
+                {
+                    MessageBox.Show("Pilih baris data di tabel terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string idPanenYangDipilih = dataGridView1.CurrentRow.Cells["ID"].Value.ToString();
+                DialogResult dialog = MessageBox.Show("Yakin ingin menghapus data panen ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+                    string queryDelete = "DELETE FROM Hasil_Panen WHERE id_panen = @ID";
+                    SqlCommand cmd = new SqlCommand(queryDelete, conn);
+                    cmd.Parameters.AddWithValue("@ID", idPanenYangDipilih);
+
+                    int result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        MessageBox.Show("Data panen berhasil dihapus secara permanen!");
+                        btnLoad.PerformClick();
+                    }
+                    conn.Close();
+                }
+            }
+            
+        }
+
         
     }
 }
