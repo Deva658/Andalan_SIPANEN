@@ -196,6 +196,19 @@ namespace UCP
             }
         }
 
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                txtID.Text = row.Cells["ID"].Value.ToString();
+                cmbTanaman.Text = row.Cells["Tanaman"].Value.ToString();
+                dtpTanggal.Value = Convert.ToDateTime(row.Cells["Tanggal"].Value);
+                txtJumlah.Text = row.Cells["Jumlah"].Value.ToString();
+                cmbKualitas.Text = row.Cells["Kualitas"].Value.ToString();
+            }
+        }
+
         
     }
 }
