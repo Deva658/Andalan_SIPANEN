@@ -21,6 +21,25 @@ namespace UCP
             txtCari.TextChanged += txtCari_TextChanged;
         }
 
+        private void FormAdmin_Load(object sender, EventArgs e)
+        {
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridView1.Columns.Clear();
+            dataGridView1.Columns.Add("ID", "ID Panen");
+            dataGridView1.Columns.Add("Petani", "Nama Petani");
+            dataGridView1.Columns.Add("NoTelp", "No. Telepon");
+            dataGridView1.Columns.Add("Tanaman", "Nama Tanaman");
+            dataGridView1.Columns.Add("Tanggal", "Tanggal Panen");
+            dataGridView1.Columns.Add("Jumlah", "Jumlah Hasil");
+            dataGridView1.Columns.Add("Satuan", "Satuan");
+            dataGridView1.Columns.Add("Kualitas", "Kualitas");
+        }
+
         
     }
 }
