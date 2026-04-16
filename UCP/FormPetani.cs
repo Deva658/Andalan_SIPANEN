@@ -209,6 +209,17 @@ namespace UCP
             }
         }
 
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult dialog = MessageBox.Show("Apakah Anda yakin ingin Log Out?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialog == DialogResult.Yes)
+            {
+                this.Hide();
+                Form1 loginForm = new Form1();
+                loginForm.Show();
+            }
+        }
+
         
     }
 }
