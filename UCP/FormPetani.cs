@@ -151,6 +151,51 @@ namespace UCP
             catch (Exception ex) { MessageBox.Show("Pastikan Jumlah Hasil diisi dengan angka! Error: " + ex.Message); }
         }
 
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtID.Text == "")
+                {
+                    MessageBox.Show("Pilih data di tabel dulu yang ingin diubah!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult dialog = MessageBox.Show("Apakah Anda yakin ingin menyimpan perubahan pada data panen ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                    string query = @"UPDATE Hasil_Panen 
+                             SET id_tanaman = @IdTanaman, tanggal_panen = @Tanggal, jumlah_hasil = @Jumlah, kualitas = @Kualitas 
+                             WHERE id_panen = @ID AND id_petani = @IdPetani";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ID", txtID.Text);
+                    cmd.Parameters.AddWithValue("@IdPetani", idPetaniLogin);
+                    cmd.Parameters.AddWithValue("@IdTanaman", cmbTanaman.SelectedValue);
+                    cmd.Parameters.AddWithValue("@Tanggal", dtpTanggal.Value);
+                    cmd.Parameters.AddWithValue("@Jumlah", float.Parse(txtJumlah.Text));
+                    cmd.Parameters.AddWithValue("@Kualitas", cmbKualitas.Text);
+
+                    int result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        MessageBox.Show("Data Panen berhasil diupdate!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClearForm();
+
+                        btnLoad.PerformClick();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi Kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         
     }
 }
