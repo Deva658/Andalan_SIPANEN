@@ -118,6 +118,39 @@ namespace UCP
             catch (Exception ex) { MessageBox.Show("Gagal Menampilkan Data: " + ex.Message); }
         }
 
+        private void btnInsert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cmbTanaman.SelectedValue == null || txtJumlah.Text == "")
+                {
+                    MessageBox.Show("Tanaman dan Jumlah Hasil harus diisi!");
+                    return;
+                }
+                if (conn.State == ConnectionState.Closed) conn.Open();
+
+                string query = @"INSERT INTO Hasil_Panen (id_petani, id_tanaman, tanggal_panen, jumlah_hasil, kualitas) 
+                                 VALUES (@IdPetani, @IdTanaman, @Tanggal, @Jumlah, @Kualitas)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@IdPetani", idPetaniLogin);
+                cmd.Parameters.AddWithValue("@IdTanaman", cmbTanaman.SelectedValue);
+                cmd.Parameters.AddWithValue("@Tanggal", dtpTanggal.Value);
+                cmd.Parameters.AddWithValue("@Jumlah", float.Parse(txtJumlah.Text));
+                cmd.Parameters.AddWithValue("@Kualitas", cmbKualitas.Text);
+
+                int result = cmd.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    MessageBox.Show("Data Panen berhasil dicatat!");
+                    ClearForm();
+                    btnLoad.PerformClick();
+                }
+                conn.Close();
+            }
+            catch (Exception ex) { MessageBox.Show("Pastikan Jumlah Hasil diisi dengan angka! Error: " + ex.Message); }
+        }
+
         
     }
 }
