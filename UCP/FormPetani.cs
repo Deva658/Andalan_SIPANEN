@@ -45,6 +45,23 @@ namespace UCP
             dataGridView1.CellClick += dataGridView1_CellClick;
         }
 
+        private void LoadDataKeComboBox(string query, ComboBox cmb, string display, string value)
+        {
+            try
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                cmb.DataSource = dt;
+                cmb.DisplayMember = display;
+                cmb.ValueMember = value;
+                cmb.SelectedIndex = -1;
+                conn.Close();
+            }
+            catch (Exception ex) { MessageBox.Show("Gagal load combobox: " + ex.Message); }
+        }
+
         
     }
 }
