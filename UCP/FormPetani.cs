@@ -220,6 +220,30 @@ namespace UCP
             }
         }
 
-        
+        private void cmbTanaman_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbTanaman.SelectedIndex == -1 || cmbTanaman.SelectedValue == null) return;
+
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                string query = "SELECT satuan_hasil FROM Tanaman WHERE id_tanaman = @ID";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@ID", cmbTanaman.SelectedValue.ToString());
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    txtSatuan.Text = result.ToString();
+                }
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
     }
 }
