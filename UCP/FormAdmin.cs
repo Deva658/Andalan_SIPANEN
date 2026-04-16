@@ -78,6 +78,44 @@ namespace UCP
             }
         }
 
+        private void txtCari_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                dataGridView1.Rows.Clear();
+
+                string querySearch = @"SELECT h.id_panen, p.nama_petani, p.no_telp, t.nama_tanaman, h.tanggal_panen, h.jumlah_hasil, t.satuan_hasil, h.kualitas 
+                                       FROM Hasil_Panen h
+                                       JOIN Petani p ON h.id_petani = p.id_petani
+                                       JOIN Tanaman t ON h.id_tanaman = t.id_tanaman
+                                       WHERE t.nama_tanaman LIKE @Cari OR p.nama_petani LIKE @Cari";
+
+                SqlCommand cmd = new SqlCommand(querySearch, conn);
+                cmd.Parameters.AddWithValue("@Cari", "%" + txtCari.Text + "%");
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dataGridView1.Rows.Add(
+                        reader["id_panen"].ToString(),
+                        reader["nama_petani"].ToString(),
+                        reader["no_telp"].ToString(),
+                        reader["nama_tanaman"].ToString(),
+                        Convert.ToDateTime(reader["tanggal_panen"]).ToShortDateString(),
+                        reader["jumlah_hasil"].ToString(),
+                        reader["satuan_hasil"].ToString(),
+                        reader["kualitas"].ToString()
+                    );
+                }
+                reader.Close();
+                conn.Close();
+            }
+            
+        }
+
         
     }
 }
