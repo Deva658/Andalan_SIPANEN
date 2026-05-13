@@ -32,3 +32,17 @@ namespace UCP
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                string queryAdmin = "SELECT * FROM vw_RiwayatPanen";
+                SqlCommand cmd = new SqlCommand(queryAdmin, conn);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                dtPanen.Clear();
+                da.Fill(dtPanen);
+
