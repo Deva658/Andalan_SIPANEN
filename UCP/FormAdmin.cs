@@ -43,6 +43,16 @@ namespace UCP
                 SqlCommand cmd = new SqlCommand(queryAdmin, conn);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
-                dtPanen.Clear();
+                dtPanen.Clear(); 
                 da.Fill(dtPanen);
 
+                bindingSource1.DataSource = dtPanen;
+                dataGridView1.DataSource = bindingSource1;
+                bindingNavigator1.BindingSource = bindingSource1;
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal Menampilkan Data: " + ex.Message);
+            }
+        }
