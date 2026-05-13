@@ -242,3 +242,40 @@ namespace UCP
                 cmbKualitas.Text = row.Cells["kualitas"].Value.ToString();
             }
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult dialog = MessageBox.Show("Apakah Anda yakin ingin Log Out?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialog == DialogResult.Yes)
+            {
+                this.Hide();
+                Form1 loginForm = new Form1();
+                loginForm.Show();
+            }
+        }
+
+        private void cmbTanaman_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbTanaman.SelectedIndex == -1 || cmbTanaman.SelectedValue == null) return;
+
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                string query = "SELECT satuan_hasil FROM Tanaman WHERE id_tanaman = @ID";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@ID", cmbTanaman.SelectedValue.ToString());
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    txtSatuan.Text = result.ToString();
+                }
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
