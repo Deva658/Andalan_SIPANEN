@@ -81,3 +81,16 @@ namespace UCP
                 MessageBox.Show("Gagal Mencari Data: " + ex.Message);
             }
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.Index == -1)
+                {
+                    MessageBox.Show("Pilih baris data di tabel terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string idPanenYangDipilih = dataGridView1.CurrentRow.Cells["id_panen"].Value.ToString();
+                DialogResult dialog = MessageBox.Show("Yakin ingin menghapus data panen ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
