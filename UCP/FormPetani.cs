@@ -78,3 +78,26 @@ namespace UCP
 
             txtSatuan.Clear();
         }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+
+                string query = "SELECT * FROM vw_RiwayatPanen WHERE id_petani = @IDLogin";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@IDLogin", idPetaniLogin);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                dtPanen.Clear();
+                da.Fill(dtPanen);
+
+                bindingSource1.DataSource = dtPanen;
+                dataGridView1.DataSource = bindingSource1;
+                bindingNavigator1.BindingSource = bindingSource1;
+
+                conn.Close();
+            }
+            catch (Exception ex) { MessageBox.Show("Gagal Menampilkan Data: " + ex.Message); }
+        }
