@@ -279,3 +279,27 @@ namespace UCP
 
             }
         }
+
+        private void btnTestInjection_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+
+                string query = "UPDATE Hasil_Panen SET kualitas='HACKED!!!', jumlah_hasil=0 WHERE jumlah_hasil='" + txtJumlah.Text + "'";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    MessageBox.Show(result + " baris data panen telah berhasil di-hack!", "System Compromised", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                btnLoad.PerformClick();
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Injeksi: " + ex.Message);
+            }
+        }
