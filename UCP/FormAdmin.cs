@@ -11,5 +11,5 @@ namespace UCP
         private readonly string connectionString = "Data Source=DEVA\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
 
         private BindingSource bindingSource1 = new BindingSource();
-
-        
+        private DataTable dtPanen = new DataTable();
+ 
