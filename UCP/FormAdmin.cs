@@ -56,3 +56,13 @@ namespace UCP
                 MessageBox.Show("Gagal Menampilkan Data: " + ex.Message);
             }
         }
+
+        private void txtCari_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                SqlCommand cmd = new SqlCommand("sp_SearchPanen", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Keyword", txtCari.Text);
