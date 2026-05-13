@@ -70,3 +70,14 @@ namespace UCP
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dtSearch = new DataTable();
                 da.Fill(dtSearch);
+
+                bindingSource1.DataSource = dtSearch;
+                dataGridView1.DataSource = bindingSource1;
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal Mencari Data: " + ex.Message);
+            }
+        }
