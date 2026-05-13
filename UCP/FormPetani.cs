@@ -303,3 +303,35 @@ namespace UCP
                 MessageBox.Show("Error Injeksi: " + ex.Message);
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+                string query = @"
+                    IF OBJECT_ID('dbo.Hasil_Panen_Backup') IS NOT NULL
+                    BEGIN
+                        DELETE FROM dbo.Hasil_Panen;
+                        SET IDENTITY_INSERT dbo.Hasil_Panen ON;
+                        INSERT INTO dbo.Hasil_Panen (id_panen, id_petani, id_tanaman, tanggal_panen, jumlah_hasil, kualitas)
+                        SELECT id_panen, id_petani, id_tanaman, tanggal_panen, jumlah_hasil, kualitas 
+                        FROM dbo.Hasil_Panen_Backup;
+                        SET IDENTITY_INSERT dbo.Hasil_Panen OFF;
+                    END";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Data Hasil Panen berhasil direset ke kondisi awal!", "Recovery Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnLoad.PerformClick();
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Reset gagal: Pastikan tabel Backup sudah dibuat di SQL Server. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
