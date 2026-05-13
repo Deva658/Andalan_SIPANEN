@@ -66,3 +66,7 @@ namespace UCP
                 SqlCommand cmd = new SqlCommand("sp_SearchPanen", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Keyword", txtCari.Text);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dtSearch = new DataTable();
+                da.Fill(dtSearch);
