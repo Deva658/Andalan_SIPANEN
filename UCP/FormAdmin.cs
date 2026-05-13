@@ -12,4 +12,14 @@ namespace UCP
 
         private BindingSource bindingSource1 = new BindingSource();
         private DataTable dtPanen = new DataTable();
- 
+        public FormAdmin()
+        {
+            InitializeComponent();
+            conn = new SqlConnection(connectionString);
+
+            this.Load += FormAdmin_Load;
+            btnLoad.Click += btnLoad_Click;
+            btnDelete.Click += btnDelete_Click;
+            btnLogout.Click += btnLogout_Click;
+            txtCari.TextChanged += txtCari_TextChanged;
+        }
