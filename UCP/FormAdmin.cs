@@ -23,3 +23,12 @@ namespace UCP
             btnLogout.Click += btnLogout_Click;
             txtCari.TextChanged += txtCari_TextChanged;
         }
+
+        private void FormAdmin_Load(object sender, EventArgs e)
+        {
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
