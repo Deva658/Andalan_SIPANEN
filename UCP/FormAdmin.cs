@@ -94,3 +94,25 @@ namespace UCP
 
                 string idPanenYangDipilih = dataGridView1.CurrentRow.Cells["id_panen"].Value.ToString();
                 DialogResult dialog = MessageBox.Show("Yakin ingin menghapus data panen ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+                    SqlCommand cmd = new SqlCommand("sp_DeleteHasilPanen", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdPanen", idPanenYangDipilih);
+
+                    int result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        MessageBox.Show("Data panen berhasil dihapus secara permanen!");
+                        btnLoad.PerformClick();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi Kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
