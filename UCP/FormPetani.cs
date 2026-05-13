@@ -211,3 +211,34 @@ namespace UCP
                 MessageBox.Show("Terjadi Kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                txtID.Text = row.Cells["id_panen"].Value.ToString();
+                cmbTanaman.Text = row.Cells["nama_tanaman"].Value.ToString();
+
+                DateTime tanggalDiTabel = Convert.ToDateTime(row.Cells["tanggal_panen"].Value);
+                DateTime batasBawahH7 = DateTime.Now.Date.AddDays(-6);
+                DateTime batasAtasHariIni = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+                dtpTanggal.MinDate = new DateTime(1900, 1, 1);
+                dtpTanggal.MaxDate = new DateTime(2100, 12, 31);
+                dtpTanggal.Value = tanggalDiTabel;
+
+                if (tanggalDiTabel < batasBawahH7)
+                    dtpTanggal.MinDate = tanggalDiTabel;
+                else
+                    dtpTanggal.MinDate = batasBawahH7;
+
+                if (tanggalDiTabel > batasAtasHariIni)
+                    dtpTanggal.MaxDate = tanggalDiTabel;
+                else
+                    dtpTanggal.MaxDate = batasAtasHariIni;
+
+                txtJumlah.Text = row.Cells["jumlah_hasil"].Value.ToString();
+                cmbKualitas.Text = row.Cells["kualitas"].Value.ToString();
+            }
+        }
