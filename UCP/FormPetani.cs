@@ -65,3 +65,16 @@ namespace UCP
             }
             catch (Exception ex) { MessageBox.Show("Gagal load combobox: " + ex.Message); }
         }
+
+        private void ClearForm()
+        {
+            txtID.Clear();
+            cmbTanaman.SelectedIndex = -1;
+            txtJumlah.Clear();
+            cmbKualitas.SelectedIndex = -1;
+            dtpTanggal.MinDate = DateTime.Now.Date.AddDays(-6);
+            dtpTanggal.MaxDate = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+            dtpTanggal.Value = DateTime.Now;
+
+            txtSatuan.Clear();
+        }
