@@ -153,3 +153,61 @@ namespace UCP
             }
             catch (Exception ex) { MessageBox.Show("Pastikan Jumlah Hasil diisi dengan angka! Error: " + ex.Message); }
         }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtID.Text == "")
+                {
+                    MessageBox.Show("Pilih data di tabel dulu yang ingin diubah!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!float.TryParse(txtJumlah.Text, out float jumlahPanen) || jumlahPanen <= 0)
+                {
+                    MessageBox.Show("Jumlah panen harus berupa angka dan tidak boleh 0 atau negatif!", "Peringatan Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtJumlah.Focus();
+                    return;
+                }
+
+                DateTime tanggalPilih = dtpTanggal.Value.Date;
+                DateTime hariIni = DateTime.Now.Date;
+                DateTime batasMin = hariIni.AddDays(-7);
+
+                if (tanggalPilih > hariIni || tanggalPilih < batasMin)
+                {
+                    MessageBox.Show($"Tanggal panen tidak valid!\nHarus antara {batasMin.ToShortDateString()} sampai {hariIni.ToShortDateString()}.", "Peringatan Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult dialog = MessageBox.Show("Apakah Anda yakin ingin menyimpan perubahan pada data panen ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("sp_UpdateHasilPanen", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdPanen", txtID.Text);
+                    cmd.Parameters.AddWithValue("@IdPetani", idPetaniLogin);
+                    cmd.Parameters.AddWithValue("@IdTanaman", cmbTanaman.SelectedValue);
+                    cmd.Parameters.AddWithValue("@TanggalPanen", dtpTanggal.Value);
+                    cmd.Parameters.AddWithValue("@JumlahHasil", jumlahPanen);
+                    cmd.Parameters.AddWithValue("@Kualitas", cmbKualitas.Text);
+
+                    int result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        MessageBox.Show("Data Panen berhasil diupdate!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClearForm();
+                        btnLoad.PerformClick();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi Kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
