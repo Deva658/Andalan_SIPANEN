@@ -36,8 +36,7 @@ namespace UCP
             cmbKualitas.Items.Add("Grade A (Sangat Bagus)");
             cmbKualitas.Items.Add("Grade B (Bagus)");
             cmbKualitas.Items.Add("Grade C (Standar)");
-            dtpTanggal.MinDate = DateTime.Now.Date.AddDays(-6);
-            dtpTanggal.MaxDate = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
 
             LoadDataKeComboBox("SELECT id_tanaman, nama_tanaman FROM Tanaman", cmbTanaman, "nama_tanaman", "id_tanaman");
 
