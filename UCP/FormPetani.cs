@@ -46,6 +46,7 @@ namespace UCP
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.CellClick += dataGridView1_CellClick;
+            ClearForm();
         }
 
         private void LoadDataKeComboBox(string query, ComboBox cmb, string display, string value)
@@ -331,6 +332,34 @@ namespace UCP
             {
                 MessageBox.Show("Reset gagal: Pastikan tabel Backup sudah dibuat di SQL Server. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnRekap_Click(object sender, EventArgs e)
+        {
+            FormRekapPanen frmRekap = new FormRekapPanen(idPetaniLogin);
+            frmRekap.Show();
+            this.Hide();
+        }
+
+        private void btnGrafik_Click(object sender, EventArgs e)
+        {
+            string namaPetani = "";
+            try
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT nama_petani FROM Petani WHERE id_petani = @id", conn);
+                cmd.Parameters.AddWithValue("@id", idPetaniLogin);
+                object result = cmd.ExecuteScalar();
+                if (result != null) namaPetani = result.ToString();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal mengambil nama profil: " + ex.Message);
+            }
+
+            Dashboard petaniChart = new Dashboard(namaPetani);
+            petaniChart.Show();
         }
     }
 }

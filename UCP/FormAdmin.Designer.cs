@@ -48,6 +48,10 @@
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.btnRekapAdmin = new System.Windows.Forms.Button();
+            this.btnGrafikAdmin = new System.Windows.Forms.Button();
+            this.btnImpDb = new System.Windows.Forms.Button();
+            this.btnImpExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
@@ -100,7 +104,7 @@
             // 
             // btnLogout
             // 
-            this.btnLogout.Location = new System.Drawing.Point(340, 377);
+            this.btnLogout.Location = new System.Drawing.Point(149, 374);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(103, 33);
             this.btnLogout.TabIndex = 13;
@@ -132,7 +136,7 @@
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(800, 31);
+            this.bindingNavigator1.Size = new System.Drawing.Size(800, 27);
             this.bindingNavigator1.TabIndex = 14;
             this.bindingNavigator1.Text = "bindingNavigator1";
             // 
@@ -149,7 +153,7 @@
             this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
             this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
             this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(29, 24);
             this.bindingNavigatorMoveFirstItem.Text = "Move first";
             // 
             // bindingNavigatorMovePreviousItem
@@ -222,11 +226,55 @@
             this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(29, 28);
             this.bindingNavigatorDeleteItem.Text = "Delete";
             // 
+            // btnRekapAdmin
+            // 
+            this.btnRekapAdmin.Location = new System.Drawing.Point(536, 374);
+            this.btnRekapAdmin.Name = "btnRekapAdmin";
+            this.btnRekapAdmin.Size = new System.Drawing.Size(103, 33);
+            this.btnRekapAdmin.TabIndex = 15;
+            this.btnRekapAdmin.Text = "Rekap Data";
+            this.btnRekapAdmin.UseVisualStyleBackColor = true;
+            this.btnRekapAdmin.Click += new System.EventHandler(this.btnRekapAdmin_Click);
+            // 
+            // btnGrafikAdmin
+            // 
+            this.btnGrafikAdmin.Location = new System.Drawing.Point(349, 374);
+            this.btnGrafikAdmin.Name = "btnGrafikAdmin";
+            this.btnGrafikAdmin.Size = new System.Drawing.Size(100, 33);
+            this.btnGrafikAdmin.TabIndex = 16;
+            this.btnGrafikAdmin.Text = "Grafik";
+            this.btnGrafikAdmin.UseVisualStyleBackColor = true;
+            this.btnGrafikAdmin.Click += new System.EventHandler(this.btnGrafikAdmin_Click);
+            // 
+            // btnImpDb
+            // 
+            this.btnImpDb.Location = new System.Drawing.Point(536, 270);
+            this.btnImpDb.Name = "btnImpDb";
+            this.btnImpDb.Size = new System.Drawing.Size(140, 33);
+            this.btnImpDb.TabIndex = 17;
+            this.btnImpDb.Text = "Import to Database";
+            this.btnImpDb.UseVisualStyleBackColor = true;
+            this.btnImpDb.Click += new System.EventHandler(this.btnImpDb_Click);
+            // 
+            // btnImpExcel
+            // 
+            this.btnImpExcel.Location = new System.Drawing.Point(123, 270);
+            this.btnImpExcel.Name = "btnImpExcel";
+            this.btnImpExcel.Size = new System.Drawing.Size(129, 33);
+            this.btnImpExcel.TabIndex = 18;
+            this.btnImpExcel.Text = "Import To Excel";
+            this.btnImpExcel.UseVisualStyleBackColor = true;
+            this.btnImpExcel.Click += new System.EventHandler(this.btnImpExcel_Click);
+            // 
             // FormAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnImpExcel);
+            this.Controls.Add(this.btnImpDb);
+            this.Controls.Add(this.btnGrafikAdmin);
+            this.Controls.Add(this.btnRekapAdmin);
             this.Controls.Add(this.bindingNavigator1);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.lblID);
@@ -265,5 +313,9 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
+        private System.Windows.Forms.Button btnRekapAdmin;
+        private System.Windows.Forms.Button btnGrafikAdmin;
+        private System.Windows.Forms.Button btnImpDb;
+        private System.Windows.Forms.Button btnImpExcel;
     }
 }

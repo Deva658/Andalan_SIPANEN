@@ -1,12 +1,15 @@
-﻿using System;
+﻿using ExcelDataReader;
+using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Windows.Forms;
 
 namespace UCP
 {
     public partial class FormAdmin : Form
     {
+        DAL dbLogic = new DAL();
         private readonly SqlConnection conn;
         private readonly string connectionString = "Data Source=DEVA\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
 
@@ -125,6 +128,89 @@ namespace UCP
                 this.Hide();
                 Form1 loginForm = new Form1();
                 loginForm.Show();
+            }
+        }
+
+        private void btnRekapAdmin_Click(object sender, EventArgs e)
+        {
+            FormRekapPanen rekapTabel = new FormRekapPanen();
+            rekapTabel.Show();
+        }
+
+        private void btnGrafikAdmin_Click(object sender, EventArgs e)
+        {
+            Dashboard adminChart = new Dashboard();
+            adminChart.Show();
+        }
+
+        private void btnImpDb_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = (DataTable)dataGridView1.DataSource;
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Tidak ada data untuk diimport.");
+                    return;
+                }
+
+                int sukses = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    string idPetani = row["id_petani"].ToString().Trim();
+                    string idTanaman = row["id_tanaman"].ToString().Trim();
+                    string kualitas = row["kualitas"].ToString().Trim();
+
+                    if (string.IsNullOrEmpty(idPetani) || string.IsNullOrEmpty(idTanaman))
+                        continue;
+
+                    DateTime tglPanen;
+                    if (!DateTime.TryParse(row["tanggal_panen"].ToString(), out tglPanen))
+                        continue;
+
+                    double jumlah = Convert.ToDouble(row["jumlah_hasil"]);
+                    dbLogic.InsertHasilPanenMassal(idPetani, idTanaman, tglPanen, kualitas, jumlah);
+                    sukses++;
+                }
+
+                MessageBox.Show($"{sukses} data hasil panen dari file Excel berhasil dimasukkan ke Database!");
+                btnImpDb.Enabled = false;
+                btnLoad.Enabled = true;
+                btnDelete.Enabled = true;
+
+                dataGridView1.Enabled = true;
+
+                btnLoad.PerformClick();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal mengimpor data database: " + ex.Message);
+            }   
+        }
+
+        private void btnImpExcel_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "Excel Workbook|*.xlsx" })
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                        {
+                            ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
+                        });
+
+                        DataTable dt = result.Tables[0];
+                        dataGridView1.DataSource = dt;
+                        dataGridView1.Enabled = false;
+                        btnImpDb.Enabled = true;
+                        btnDelete.Enabled = false;
+                        btnLoad.Enabled = false;
+                    }
+                }
             }
         }
     }

@@ -87,6 +87,8 @@ JOIN Tanaman t ON h.id_tanaman = t.id_tanaman;
 SELECT * INTO Hasil_Panen_Backup 
 FROM Hasil_Panen;
 
+SELECT * FROM Hasil_Panen
+
 CREATE PROCEDURE sp_InsertHasilPanen
     @IdPetani INT,
     @IdTanaman INT,
@@ -173,3 +175,140 @@ END
 DROP PROCEDURE sp_SearchPanen;
 GO
 
+CREATE TABLE LogError (
+    id_log INT IDENTITY(1,1) PRIMARY KEY,
+    waktu DATETIME DEFAULT GETDATE(),
+    pesan_error VARCHAR(MAX)
+);
+GO
+
+CREATE TABLE LogAktivitas (
+    id_log INT IDENTITY(1,1) PRIMARY KEY,
+    aktivitas VARCHAR(100),
+    waktu DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TABLE LogKeamanan (
+    id_log INT IDENTITY(1,1) PRIMARY KEY,
+    aktivitas VARCHAR(200),
+    jumlah_data INT,
+    waktu DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TRIGGER trg_InsertHasilPanen
+ON Hasil_Panen
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO LogAktivitas (aktivitas, waktu)
+    VALUES ('Tambah data hasil panen', GETDATE());
+END;
+GO
+
+CREATE TRIGGER trg_DeleteHasilPanen
+ON Hasil_Panen
+AFTER DELETE
+AS
+BEGIN
+    INSERT INTO LogAktivitas (aktivitas, waktu)
+    VALUES ('Hapus data hasil panen', GETDATE());
+END;
+GO
+
+CREATE TRIGGER trg_UpdatePanen
+ON Hasil_Panen
+AFTER UPDATE
+AS
+BEGIN
+    DECLARE @jumlah INT;
+    
+    SELECT @jumlah = COUNT(*) FROM inserted; 
+
+    IF @jumlah > 1
+    BEGIN
+        -- Simpan ke log keamanan
+        INSERT INTO LogKeamanan (aktivitas, jumlah_data, waktu)
+        VALUES ('WARNING: Update massal terdeteksi pada tabel Hasil_Panen', @jumlah, GETDATE()); 
+
+        -- Membatalkan transaksi transaksi
+        ROLLBACK TRANSACTION; 
+
+        -- Menampilkan pesan error ke sistem/aplikasi
+        RAISERROR('Update dibatalkan! Terlalu banyak data diubah sekaligus (Indikasi Ancaman Keamanan).', 16, 1); 
+    END
+END;
+GO
+
+ALTER PROCEDURE sp_ReportPanen
+    @inNamaPetani VARCHAR(100),
+    @inTahunPanen CHAR(4)
+AS
+BEGIN
+    IF @inNamaPetani = 'Semua' OR @inNamaPetani = ''
+    BEGIN
+        SELECT 
+            h.id_panen AS IdPanen,
+            p.nama_petani AS NamaPetani,
+            t.nama_tanaman AS NamaTanaman,
+            h.tanggal_panen AS TanggalPanen,
+            h.jumlah_hasil AS JumlahHasil,
+            t.satuan_hasil AS SatuanHasil,
+            h.kualitas AS Kualitas
+        FROM Hasil_Panen h
+        JOIN Petani p ON h.id_petani = p.id_petani
+        JOIN Tanaman t ON h.id_tanaman = t.id_tanaman
+        WHERE YEAR(h.tanggal_panen) = @inTahunPanen;
+    END
+    ELSE
+    BEGIN
+        SELECT 
+            h.id_panen AS IdPanen,
+            p.nama_petani AS NamaPetani,
+            t.nama_tanaman AS NamaTanaman,
+            h.tanggal_panen AS TanggalPanen,
+            h.jumlah_hasil AS JumlahHasil,
+            t.satuan_hasil AS SatuanHasil,
+            h.kualitas AS Kualitas
+        FROM Hasil_Panen h
+        JOIN Petani p ON h.id_petani = p.id_petani
+        JOIN Tanaman t ON h.id_tanaman = t.id_tanaman
+        WHERE p.nama_petani = @inNamaPetani
+          AND YEAR(h.tanggal_panen) = @inTahunPanen;
+    END
+END;
+GO
+
+CREATE PROCEDURE sp_DashboardAdmin
+    @inTahun CHAR(4)
+AS
+BEGIN
+    SELECT 
+        p.nama_petani AS NamaSumbuX,
+        SUM(h.jumlah_hasil) AS TotalPanen
+    FROM Hasil_Panen h
+    JOIN Petani p ON h.id_petani = p.id_petani
+    WHERE YEAR(h.tanggal_panen) = @inTahun
+    GROUP BY p.nama_petani;
+END;
+GO
+
+CREATE PROCEDURE sp_DashboardPetani
+    @inNamaPetani VARCHAR(100),
+    @inTahun CHAR(4)
+AS
+BEGIN
+    SELECT 
+        t.nama_tanaman AS NamaSumbuX,
+        SUM(h.jumlah_hasil) AS TotalPanen
+    FROM Hasil_Panen h
+    JOIN Petani p ON h.id_petani = p.id_petani
+    JOIN Tanaman t ON h.id_tanaman = t.id_tanaman
+    WHERE p.nama_petani = @inNamaPetani
+      AND YEAR(h.tanggal_panen) = @inTahun
+    GROUP BY t.nama_tanaman;
+END;
+GO
+
+select * from LogAktivitas

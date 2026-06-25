@@ -63,6 +63,8 @@
             this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.btnTestInjection = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.btnRekap = new System.Windows.Forms.Button();
+            this.btnGrafik = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
@@ -142,12 +144,10 @@
             // dtpTanggal
             // 
             this.dtpTanggal.Location = new System.Drawing.Point(156, 129);
-            this.dtpTanggal.MaxDate = new System.DateTime(2026, 5, 22, 0, 0, 0, 0);
-            this.dtpTanggal.MinDate = new System.DateTime(2026, 5, 15, 0, 0, 0, 0);
             this.dtpTanggal.Name = "dtpTanggal";
             this.dtpTanggal.Size = new System.Drawing.Size(243, 22);
             this.dtpTanggal.TabIndex = 9;
-            this.dtpTanggal.Value = new System.DateTime(2026, 5, 15, 0, 0, 0, 0);
+            this.dtpTanggal.Value = new System.DateTime(2026, 6, 20, 0, 0, 0, 0);
             // 
             // txtJumlah
             // 
@@ -260,7 +260,7 @@
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(800, 27);
+            this.bindingNavigator1.Size = new System.Drawing.Size(800, 31);
             this.bindingNavigator1.TabIndex = 20;
             this.bindingNavigator1.Text = "bindingNavigator1";
             // 
@@ -277,7 +277,7 @@
             this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
             this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
             this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(29, 24);
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(29, 28);
             this.bindingNavigatorMoveFirstItem.Text = "Move first";
             // 
             // bindingNavigatorMovePreviousItem
@@ -370,11 +370,33 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // btnRekap
+            // 
+            this.btnRekap.Location = new System.Drawing.Point(655, 235);
+            this.btnRekap.Name = "btnRekap";
+            this.btnRekap.Size = new System.Drawing.Size(99, 27);
+            this.btnRekap.TabIndex = 23;
+            this.btnRekap.Text = "Rekap Data";
+            this.btnRekap.UseVisualStyleBackColor = true;
+            this.btnRekap.Click += new System.EventHandler(this.btnRekap_Click);
+            // 
+            // btnGrafik
+            // 
+            this.btnGrafik.Location = new System.Drawing.Point(574, 235);
+            this.btnGrafik.Name = "btnGrafik";
+            this.btnGrafik.Size = new System.Drawing.Size(75, 27);
+            this.btnGrafik.TabIndex = 24;
+            this.btnGrafik.Text = "Grafik";
+            this.btnGrafik.UseVisualStyleBackColor = true;
+            this.btnGrafik.Click += new System.EventHandler(this.btnGrafik_Click);
+            // 
             // FormPetani
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnGrafik);
+            this.Controls.Add(this.btnRekap);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnTestInjection);
             this.Controls.Add(this.bindingNavigator1);
@@ -443,5 +465,7 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.Button btnTestInjection;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnRekap;
+        private System.Windows.Forms.Button btnGrafik;
     }
 }
