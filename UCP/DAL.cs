@@ -10,7 +10,7 @@ namespace UCP
 {
     internal class DAL
     {
-        private static string connectionString = "Data Source=DEVA\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
+        private static string connectionString = "Data Source=172.26.60.167,1433\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
         private SqlConnection conn = new SqlConnection(connectionString);
         private SqlDataAdapter da;
         private DataTable dtResult;

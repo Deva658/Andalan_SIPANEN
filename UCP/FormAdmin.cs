@@ -11,7 +11,7 @@ namespace UCP
     {
         DAL dbLogic = new DAL();
         private readonly SqlConnection conn;
-        private readonly string connectionString = "Data Source=DEVA\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
+        private readonly string connectionString = "Data Source=172.26.60.167,1433\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
 
         private BindingSource bindingSource1 = new BindingSource();
         private DataTable dtPanen = new DataTable();
