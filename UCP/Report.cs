@@ -13,7 +13,7 @@ namespace UCP
 {
     public partial class Report : Form
     {
-        static string connectionString = "Data Source=DEVA\\DEPA15;Initial Catalog=DB_HasilPanen;Integrated Security=True";
+        static string connectionString = "Data Source=172.26.60.167,1433\\DEPA15;Initial Catalog=DB_HasilPanen;User ID=sa;Password=123;Integrated Security=False;TrustServerCertificate=True;";
         SqlConnection conn = new SqlConnection(connectionString);
         SqlDataAdapter da;
         DataTable dtHasilPanen;

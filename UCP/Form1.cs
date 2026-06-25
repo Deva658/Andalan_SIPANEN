@@ -11,11 +11,11 @@ using System.Data.SqlClient;
 
 namespace UCP
 {
-
     public partial class Form1 : Form
     {
         private readonly SqlConnection conn;
-        private readonly string connectionString = "Data Source = DEVA\\DEPA15; Initial Catalog = DB_HasilPanen; Integrated Security=True";
+        private readonly string connectionString = "Data Source=172.26.60.167,1433\\DEPA15;Initial Catalog=DB_HasilPanen;User ID=sa;Password=123;Integrated Security=False;TrustServerCertificate=True;";
+
         public Form1()
         {
             InitializeComponent();
@@ -29,16 +29,17 @@ namespace UCP
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            if (conn.State == ConnectionState.Open) conn.Close();
+
             try
             {
-                conn.Open();
-
                 if (txtUsername.Text == "" || txtPassword.Text == "")
                 {
                     MessageBox.Show("Username atau Password tidak boleh kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    conn.Close();
                     return;
                 }
+
+                conn.Open();
 
                 string query = "SELECT 'Admin' AS Role, id_admin AS UserID, nama_lengkap AS Nama FROM Admin WHERE username=@u AND password=@p " +
                                "UNION " +
@@ -48,40 +49,54 @@ namespace UCP
                 cmd.Parameters.AddWithValue("@u", txtUsername.Text);
                 cmd.Parameters.AddWithValue("@p", txtPassword.Text);
 
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    string role = reader["Role"].ToString();
-                    string idUser = reader["UserID"].ToString();
-                    string namaUser = reader["Nama"].ToString();
-
-                    MessageBox.Show("Login Berhasil sebagai " + role, "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    this.Hide();
-
-                    if (role == "Admin")
+                    if (reader.Read())
                     {
-                        FormAdmin adminForm = new FormAdmin();
-                        adminForm.Show();
+                        string role = reader["Role"].ToString();
+                        string idUser = reader["UserID"].ToString();
+                        string namaUser = reader["Nama"].ToString();
+
+                        if (role == "Admin")
+                        {
+                            if (!Environment.MachineName.Equals("DEVA", StringComparison.OrdinalIgnoreCase))
+                            {
+                                MessageBox.Show("Akses Ditolak!\nFitur Admin hanya dapat diakses langsung dari komputer Server (DEVA).", "Gagal Hak Akses", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                                return;
+                            }
+                        }
+
+                        MessageBox.Show("Login Berhasil sebagai " + role, "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        this.Hide();
+
+                        if (role == "Admin")
+                        {
+                            FormAdmin adminForm = new FormAdmin();
+                            adminForm.Show();
+                        }
+                        else
+                        {
+                            FormPetani petaniForm = new FormPetani(idUser, namaUser);
+                            petaniForm.Show();
+                        }
                     }
                     else
                     {
-                        FormPetani petaniForm = new FormPetani(idUser, namaUser);
-                        petaniForm.Show();
+                        MessageBox.Show("Username atau Password salah!", "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Username atau Password salah!", "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                reader.Close();
-                conn.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
         }
 
@@ -95,9 +110,7 @@ namespace UCP
                 }
 
                 conn.Open();
-
                 MessageBox.Show("Koneksi Database Berhasil! Aplikasi siap digunakan.", "Status Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 conn.Close();
             }
             catch (Exception ex)
