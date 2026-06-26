@@ -14,7 +14,7 @@ namespace UCP
     public partial class Form1 : Form
     {
         private readonly SqlConnection conn;
-        private readonly string connectionString = "Data Source=172.26.60.167,1433\\DEPA15;Initial Catalog=DB_HasilPanen;User ID=sa;Password=123;Integrated Security=False;TrustServerCertificate=True;";
+        private readonly string connectionString = "Data Source=10.69.9.211,1433\\DEPA15;Initial Catalog=DB_HasilPanen;User ID=sa;Password=123;Integrated Security=False;TrustServerCertificate=True;";
 
         public Form1()
         {
